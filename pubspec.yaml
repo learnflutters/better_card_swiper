@@ -6,6 +6,7 @@ homepage: https://github.com/TheAnkurPanchani/flutter_swiper
 dependencies:
   flutter:
     sdk: flutter
+  build_runner: ^2.4.13
 
 environment:
   sdk: ">=2.15.0 <4.0.0"

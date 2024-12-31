@@ -38,8 +38,6 @@ class Swiper extends StatefulWidget {
   const Swiper({
     this.itemBuilder,
     this.indicatorLayout = PageIndicatorLayout.NONE,
-
-    ///
     this.transformer,
     required this.itemCount,
     this.autoplay = false,
@@ -57,12 +55,11 @@ class Swiper extends StatefulWidget {
     this.axisDirection = AxisDirection.left,
     this.pagination,
     this.plugins,
+    this.scrollController,
     this.physics,
     Key? key,
     this.controller,
     this.customLayoutOption,
-
-    /// since v1.0.0
     this.containerHeight,
     this.containerWidth,
     this.viewportFraction = 1.0,
@@ -233,6 +230,8 @@ class Swiper extends StatefulWidget {
 
   /// Build in layouts
   final SwiperLayout layout;
+
+  final ScrollController? scrollController;
 
   /// this value is valid when layout == SwiperLayout.CUSTOM
   final CustomLayoutOption? customLayoutOption;
@@ -490,6 +489,7 @@ class _SwiperState extends _SwiperTimerMixin {
 
     if (widget.layout == SwiperLayout.STACK) {
       return _StackSwiper(
+        scrollController: widget.scrollController,
         loop: widget.loop,
         itemWidth: widget.itemWidth,
         itemHeight: widget.itemHeight,
@@ -699,6 +699,7 @@ abstract class _SubSwiper extends StatefulWidget {
     this.itemBuilder,
     required this.controller,
     this.index,
+    this.scrollController,
     required this.itemCount,
     this.scrollDirection = Axis.horizontal,
     this.axisDirection = AxisDirection.left,
@@ -708,6 +709,7 @@ abstract class _SubSwiper extends StatefulWidget {
   final IndexedWidgetBuilder? itemBuilder;
   final int itemCount;
   final int? index;
+  final ScrollController? scrollController;
   final ValueChanged<int>? onIndexChanged;
   final SwiperController controller;
   final int? duration;
@@ -769,6 +771,7 @@ class _TinderSwiper extends _SubSwiper {
 class _StackSwiper extends _SubSwiper {
   const _StackSwiper({
     Key? key,
+    ScrollController? scrollController,
     required Curve curve,
     int? duration,
     required SwiperController controller,
@@ -782,6 +785,7 @@ class _StackSwiper extends _SubSwiper {
     Axis? scrollDirection,
     AxisDirection? axisDirection,
   }) : super(
+          scrollController: scrollController,
           loop: loop,
           key: key,
           itemWidth: itemWidth,

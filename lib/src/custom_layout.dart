@@ -7,6 +7,7 @@ abstract class _CustomLayoutStateBase<T extends _SubSwiper> extends State<T>
   late Animation<double> _animation;
   late AnimationController _animationController;
   SwiperController get _controller => widget.controller;
+  ScrollController? get _scrollController => widget.scrollController;
   late int _startIndex;
   int? _animationCount;
   int _currentIndex = 0;
@@ -90,8 +91,11 @@ abstract class _CustomLayoutStateBase<T extends _SubSwiper> extends State<T>
   Widget _buildItem(int i, int realIndex, double animationValue);
 
   Widget _buildContainer(List<Widget> list) {
-    return Stack(
-      children: list,
+    return SingleChildScrollView(
+      controller: _scrollController,
+      child: Stack(
+        children: list,
+      ),
     );
   }
 
