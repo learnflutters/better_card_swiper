@@ -123,6 +123,11 @@ class ExampleHorizontal extends StatelessWidget {
         title: const Text('ExampleHorizontal'),
       ),
       body: Swiper(
+        layout: SwiperLayout.STACK,
+        containerWidth: 300,
+        containerHeight: 300,
+        itemWidth: 300.0,
+        itemHeight: 300,
         itemBuilder: (context, index) {
           final image = images[index];
           return Image.asset(
@@ -131,7 +136,6 @@ class ExampleHorizontal extends StatelessWidget {
           );
         },
         indicatorLayout: PageIndicatorLayout.COLOR,
-        autoplay: true,
         itemCount: images.length,
         pagination: const SwiperPagination(),
         control: const SwiperControl(),

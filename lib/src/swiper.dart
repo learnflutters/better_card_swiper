@@ -893,6 +893,9 @@ class _StackViewState extends _CustomLayoutStateBase<_StackSwiper> {
   late List<double> scales;
   late List<double> offsets;
   late List<double> opacity;
+  late List<double> offsetHeights;
+  late List<double> offsetWidths;
+  late List<double> itemOpacity;
 
   void _updateValues() {
     if (widget.scrollDirection == Axis.horizontal) {
@@ -900,9 +903,15 @@ class _StackViewState extends _CustomLayoutStateBase<_StackSwiper> {
       offsets = widget.axisDirection == AxisDirection.left
           ? [-space, -space / 3 * 2, -space / 3, 0.0, _swiperWidth]
           : [_swiperWidth, 0.0, -space / 3, -space / 3 * 2, -space];
+      offsetHeights = [12 * 4, 12 * 3, 12 * 2, 12, 0];
+      offsetWidths = [-15 * 4, -15 * 3, -15 * 2, -15, 0];
+      itemOpacity = [0, 0, 0.2, 0.3, 1];
     } else {
       final space = (_swiperHeight - widget.itemHeight!) / 2;
       offsets = [-space, -space / 3 * 2, -space / 3, 0.0, _swiperHeight];
+      offsetHeights = [12 * 4, 12 * 3, 12 * 2, 12, 0];
+      offsetWidths = [-15 * 4, -15 * 3, -15 * 2, -15, 0];
+      itemOpacity = [0, 0, 0.2, 0.3, 1];
     }
   }
 
@@ -922,8 +931,7 @@ class _StackViewState extends _CustomLayoutStateBase<_StackSwiper> {
 
     //Array below this line, '0' index is 1.0, which is the first item show in swiper.
     _startIndex = isRightSide ? -1 : -3;
-    scales =
-        isRightSide ? [1.0, 1.0, 0.9, 0.8, 0.7] : [0.7, 0.8, 0.9, 1.0, 1.0];
+    scales = isRightSide ? [1.0, 1.0, 1, 1, 1] : [1, 1, 1, 1.0, 1.0];
     opacity =
         isRightSide ? [1.0, 1.0, 1.0, 0.5, 0.0] : [0.0, 0.5, 1.0, 1.0, 1.0];
 
@@ -933,14 +941,15 @@ class _StackViewState extends _CustomLayoutStateBase<_StackSwiper> {
   @override
   Widget _buildItem(int i, int realIndex, double animationValue) {
     final s = _getValue(scales, animationValue, i);
-    final f = _getValue(offsets, animationValue, i);
-    final o = _getValue(opacity, animationValue, i);
+    final f = _getValue(offsetWidths, animationValue, i);
+    final o = _getValue(itemOpacity, animationValue, i);
+    final h = _getValue(offsetHeights, animationValue, i);
 
     final offset = widget.scrollDirection == Axis.horizontal
         ? widget.axisDirection == AxisDirection.left
-            ? Offset(f, 0.0)
-            : Offset(-f, 0.0)
-        : Offset(0.0, f);
+            ? Offset(f, h)
+            : Offset(-f, h)
+        : Offset(h, f);
 
     final alignment = widget.scrollDirection == Axis.horizontal
         ? widget.axisDirection == AxisDirection.left
